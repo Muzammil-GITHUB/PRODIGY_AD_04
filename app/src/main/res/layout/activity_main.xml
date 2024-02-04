@@ -1,0 +1,58 @@
+import android.os.Bundle;
+    import android.view.View;
+    import android.widget.GridLayout;
+    import android.widget.ImageView;
+    import androidx.appcompat.app.AppCompatActivity;
+
+    public class MainActivity extends AppCompatActivity {
+
+    private GridLayout gridLayout;
+    private int[][] board = new int[3][3]; // 0: Empty, 1: X, 2: O
+    private int currentPlayer = 1; // 1: X, 2: O
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    gridLayout = findViewById(R.id.gridLayout);
+
+    // Set initial properties for each cell
+    for (int row = 0; row < gridLayout.getRowCount(); row++) {
+    for (int col = 0; col < gridLayout.getColumnCount(); col++) {
+    int cellId = getResources().getIdentifier("cell_" + row + col, "id", getPackageName());
+    ImageView cell = findViewById(cellId);
+    cell.setImageResource(R.drawable.ic_empty);
+    }
+    }
+    }
+
+    public void onCellClicked(View view) {
+    if (view instanceof ImageView) {
+    int rowIndex = GridLayout.getRowSpec(view.getLayoutParams());
+    int colIndex = GridLayout.getColumnSpec(view.getLayoutParams());
+
+    int cellRow = gridLayout.getRowIndex(rowIndex);
+    int cellCol = gridLayout.getColumnIndex(colIndex);
+
+    if (board[cellRow][cellCol] == 0) {
+    int symbol = (currentPlayer == 1) ? R.drawable.ic_x : R.drawable.ic_o;
+    ((ImageView) view).setImageResource(symbol);
+    board[cellRow][cellCol] = currentPlayer;
+
+    if (checkForWinner(cellRow, cellCol)) {
+    // Handle game over
+    } else {
+    currentPlayer = (currentPlayer == 1) ? 2 : 1;
+    }
+    }
+    }
+    }
+
+    private boolean checkForWinner(int row, int col) {
+    // Implement the logic to check for a winner (row, column, diagonal)
+    // Return true if a winner is found, false otherwise
+    // Update UI or show a message if there is a winner
+    return false;
+    }
+    }
